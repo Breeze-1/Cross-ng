@@ -26,6 +26,9 @@ jobs:
           remove-dotnet: 'true'
           remove-haskell: 'true'
           remove-android: 'true'
+    - name: Echo 
+      run: |
+            ls
     - name: Checkout
       uses: actions/checkout@v2
     - name: Echo Free space
