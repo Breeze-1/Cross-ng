@@ -42,7 +42,7 @@ jobs:
     - name: Prepare Env
       run: |
         sudo apt-get update
-        sudo apt-get install libncurses5-dev gperf bison  flex texinfohelp2man gawk libtool libtool-bin automake
+        sudo apt-get install libncurses5-dev gperf bison  flex texinfo help2man gawk libtool libtool-bin automake
         sudo apt install build-essential
     - name: Get Resource
       run: |
