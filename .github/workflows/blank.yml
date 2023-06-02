@@ -1,0 +1,72 @@
+name: Cross-compiler-toolchain 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: 00 16 * * *
+  watch:
+    types: [started]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+ Cross-compiler-toolchain :
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@v4
+      with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-android: 'true'
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Echo Free space
+      run: |
+          echo "Free space:"
+          df -h
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' 
+    - name: Prepare Env
+      run: |
+        sudo apt-get update
+        sudo apt-get install libncurses5-dev gperf bison  flex texinfohelp2man gawk libtool libtool-bin automake
+        sudo apt install build-essential
+    - name: Get Resource
+      run: |
+        git clone https://github.com/crosstool-ng/crosstool-ng
+        cd crosstool-ng
+        ./bootstrap
+    - name: Build 
+      run: |
+        mkdir cross
+        ./crosstool-ng/configure --prefix=cross
+        make
+        make install
+    - name: env
+      run: |
+        export PATH="$PATH:$PWD/crosstool-ng"
+        ct-ng list-samples
+        ct-ng aarch64-unknown-linux-gnu
+        wget https://github.com/Breeze-1/Cross-ng/raw/main/config
+        mv config crosstool-ng/.config
+        ct-ng build
+    - name: ZIP
+      run: |
+          tar –czf aarch64-unknown-linux-gnu.tar.gz x-tools/aarch64-unknown-linux-gnu
+    - name: Release Engine
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "*.tar.gz"
+        tag: aarch64-unknown-linux-gnu
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
