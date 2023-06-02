@@ -52,9 +52,7 @@ jobs:
     - name: Build 
       run: |
         mkdir cross
-        cd cross 
-        pwd
-        ./crosstool-ng/configure --prefix=cross
+        ./crosstool-ng/configure --prefix=/home/runner/work/Cross-ng/Cross-ng/cross
         make
         make install
     - name: env
