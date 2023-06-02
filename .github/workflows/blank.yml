@@ -61,6 +61,7 @@ jobs:
         export PATH="$PATH:$PWD/crosstool-ng"
         ct-ng list-samples
         ct-ng aarch64-unknown-linux-gnu
+        rm .config
         wget https://github.com/Breeze-1/Cross-ng/raw/main/.config
         mv .config crosstool-ng/.config
         ct-ng build
