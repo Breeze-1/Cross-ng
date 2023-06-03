@@ -38,12 +38,13 @@ jobs:
     - name: Set up Python 3.x
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10' 
+        python-version: '3.11' 
     - name: Prepare Env
       run: |
         sudo apt-get update
         sudo apt-get install libncurses5-dev gperf bison  flex texinfo help2man gawk libtool libtool-bin automake
         sudo apt install build-essential
+        sudo apt install python-dev-is-python3
     - name: Get Resource
       run: |
         git clone https://github.com/crosstool-ng/crosstool-ng
@@ -60,12 +61,9 @@ jobs:
       run: |
         export PATH="$PATH:$PWD/crosstool-ng"
         ct-ng list-samples
+        mkdir tools
+        cd tools
         ct-ng aarch64-unknown-linux-gnu
-        ct-ng menuconfig
-        rm .config
-        wget https://github.com/Breeze-1/Cross-ng/raw/main/.config
-        rm Cross-ng/.config
-        mv .config crosstool-ng/.config
         ct-ng build
     - name: ZIP
       run: |
