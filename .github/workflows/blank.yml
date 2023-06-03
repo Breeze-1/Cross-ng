@@ -60,7 +60,7 @@ jobs:
         sudo mkdir /home/src
         cd tools
         ct-ng aarch64-unknown-linux-gnu
-        sudo ct-ng build V=2
+        ct-ng build V=2
     - name: ZIP
       run: |
          sudo tar –czf aarch64-unknown-linux-gnu.tar.gz /home/x-tools/aarch64-unknown-linux-gnu
