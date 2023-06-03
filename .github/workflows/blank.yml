@@ -45,7 +45,7 @@ jobs:
         sudo apt-get install libncurses5-dev gperf bison  flex texinfo help2man gawk libtool libtool-bin automake
         sudo apt install build-essential
         sudo apt install python-dev-is-python3
-    - name: Build 
+    - name: Build Crosstools-ng
       run: |
         git clone https://github.com/crosstool-ng/crosstool-ng.git
         cd crosstool-ng
@@ -53,7 +53,7 @@ jobs:
         ./configure
         make
         sudo make install
-    - name: env
+    - name: Build Crosstools chain
       run: |
         unset LD_LIBRARY_PATH
         mkdir tools
